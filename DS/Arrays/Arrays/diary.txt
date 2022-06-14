@@ -1,0 +1,190 @@
+//Number System
+1.Any base to decimal+decimal to any base+any base to any base,Leetcode 504 convertToBase7
+2.Addition in any System
+3.Add binary string //67
+4.Subtraction in any System
+5.Multiplication in any System
+6.Multiply String(2)   //43
+
+//====Array
+    36.Merge Interval  //56
+    37.Meeting room I //920  lintcode
+    38.Interval intersection //986
+    39.Insert Interval //57
+
+    40.Majority Element //169
+    41.Majority element //229
+    42.Majority element general  //gfg
+
+    43.missing number  //268(2)
+    44.Find disappearing number //448
+    45.first missing positive //41
+    45.Find duplicate number(2) //287
+    46.Find all duplicate in array //442  
+
+    47.Merge sort //ib
+    48.Merge sort  //88
+
+    23.Remove element
+    24.Remove duplicate
+    25.Remove duplicate 2
+
+    .1.ArrayList(add/add(idx,val),set(idx,val),get(idx),remove(idx),size())
+    2.Remove prime from list
+    3.Span of Array
+    4.Subarray
+    5.Subset of Array
+    7.Inverse of Array
+    8.Linear search
+    9.Ceil and Floor
+    10.First and Last Index
+    11.Add two Array
+    12.Subtract two array
+
+    14.Minimize max pair sum in array //1877
+    15.Minimum distance to target element //1848
+    16.Maximum element after decreasing and rearranging //1846
+    17.Maximum product of three number //628
+    18.3 pointer //ib
+    Triplet with sum btw given range
+
+    19.Positive Negative(2)
+    20.Move zeroes to end //283
+    21.Binary Sort gfg
+    22.Sort array by parity //905
+    23.Sort colors  //75
+    6.Rotate Array  //189
+    24.Maximize sum of rotated array(2)
+
+    53.Range addition,Range addition 2 //598
+    54.Max chunk to make sorted-1,2 //768 ,769
+    56.Find pair //512
+    .55.Product of array except self(2)  //238
+    Maximum abs difference
+    61.Wiggle sort  //lintcode
+    62.wiggle sort 2
+
+    49.Largest/Longest Sum Contiguos array(Kadane Algo)(2) //53
+    50.K-Concatenation(2)
+    51.Number of subMatrix that sum to target //1074 
+    .52.Maximum sum subMatrix no larger than k //363 
+    Max sum square //ib
+    .flip //ib
+
+    Maximum unsorted subarray
+    Maximum distance
+    Maximum Distance Between a Pair of Values
+    Partition in 3 parts
+    perfect peak
+    max sum triplet
+    Increasing Triplet
+
+    Anti Diagonal
+    Pascal Triangle 1/2
+    Minimum lights to activate
+    66.Largest Number  //179
+    58.Container with most water //11
+    59.Best meeting point //912 lintcode
+    57.Min Jump with +i -i
+    Sorted square
+    Plus One
+    Minimum absolute difference
+    Maximum Minimum
+    Min step in infinite grid
+    60.Maximum Product SubArray  //152
+    xoring subarray
+    hotel Booking Possible
+    Leader of array
+
+    25.Max consecutive 1(2) //485
+    26.Maximum sliding window  //239
+    27.SubArray sum equal K //560
+    .32.Binary subarray with sum(3) //930
+    30.Longest & count subarray with equal 0&1 //525 & gfg  
+    31.Longest & count of subarray div by k(2)  //gfg //974
+    28.Max consecutive 1 part 3 //1004
+    29.total fruit into basket  //904
+    33.Number of nice subarray //1248
+    34.Number of subarray with K distinct element //IB
+    35.Rabbits in forest  //781
+
+    62.Next Permutation array //31
+    63.Next Permutation Number(2) //60
+    64.Next greater element 3(2) //556
+    65.Get Min Swap to reach kth Smallest Number //1850 
+
+static class pair implements Comparable<pair> {
+    int val;
+    int index;
+
+    pair(int val, int index) {
+        this.val = val;
+        this.index = index;
+    }
+
+    public int compareTo(pair o) {
+        return o.val - this.val;
+    }
+}
+
+public int[] maxSlidingWindow(int[] arr, int k) {
+    int[] ans = new int[arr.length - k + 1];
+    PriorityQueue<pair> pq = new PriorityQueue<>();
+    int i = 0, j = 0;
+    while (i != k) {
+        pq.add(new pair(arr[i], i));
+        i++;
+    }
+    ans[j++] = pq.peek().val;
+
+    int minRange = 1;
+    for (; i < arr.length; i++) {
+        pq.add(new pair(arr[i], i));
+        while (!(pq.peek().index >= minRange && pq.peek().index < k + minRange))
+            pq.poll();
+        ans[j++] = pq.peek().val;
+        minRange++;
+    }
+
+    return ans;
+}
+
+public static int[] ngeOnRightMaxSliding(int[] arr) {
+    int n = arr.length;
+    int[] nge = new int[n];
+    nge[n - 1] = arr.length;
+
+    Stack<Integer> st = new Stack<>();
+    st.push(n - 1);
+    for (int i = n - 2; i >= 0; i--) {
+        while (st.size() > 0 && arr[i] >= arr[st.peek()])
+            st.pop();
+        if (st.size() != 0)
+            nge[i] = st.peek();
+        else
+            nge[i] = arr.length;
+
+        st.push(i);
+    }
+    return nge;
+}
+
+public static int[] maxSlidingWindow2(int[] arr, int k) {
+    int ans[] = new int[arr.length - k + 1];
+    int[] nge = ngeOnRightMaxSliding(arr);
+
+    int j = 0, l = 0;
+    for (int i = 0; i <= arr.length - k; i++) {
+        if (j < i)
+            j = i;
+
+        while (nge[j] < i + k)
+            j = nge[j];
+
+        ans[l++] = arr[j];
+    }
+
+    for (int ele : ans)
+        System.out.println(ele);
+    return ans;
+}

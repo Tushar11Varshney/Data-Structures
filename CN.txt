@@ -1,0 +1,264 @@
+group of interconnected thing=>network ..eg water supply system.
+cn mein computer interconnected to share resources like printer,file server,internet
+
+computing-using comp technology to complete the task(swiping debit car,sending email).computing involve use of electronic device(pc/smartphone,atm).
+cn involve use computing+telecommunicatiion(telephone lines/wireless) for transmitiing data over long distance.
+cn interface of computing and telecommunicatiion
+
+eg=>wan(join geographically distributed comp) to each other=>Internet.
+
+$
+comp in internet connect(underwater cable,wirelessly)
+comp =>address(ip)=>other comp find & locate my comp
+with ipv4 4 billion devices can be addressed and connected to internet
+dynamic ip=>isp provide diffrn ip each time from available range
+static ip=>never change,permanent ip.eg:dns server(comp which help to open a website on our comp)
+Trace locn of device using static ip=>asia=>india=>dilli=>jio.static Ip address allow billion of devices to be pin pointed,so less secure 
+
+$
+a->b(rules followed by both same ,movie miligyi)
+a->c(rules not follow ,file corrupted miligyi).protocol(set of rules) se effective connection among networking device
+security measure added to each packet decided by network protocol..pakcets receive and reassembled at destn
+arp/icmp interact with NIC/network adapter
+
+computer need name to differentiate one machine from other
+
+dns-slave exact replica of master and used to share DNS SERVER LOAD
+
+arp module provide mac address if dstn present  in same network.
+1.network
+2.ipv4 ipv6 dynamic/static
+3.network protocol-wireless/internet/network routing
+4.hostname,domain name,fqdn
+5.network component-endpoint,nic,lan cable,connector,switch,router
+6.OSI MODEL-       
+            i) appln(n/w appln)
+            ii) presentation(data compression,secure socket layer)
+            iii) session(receive,send,termn of conn/session)
+            iv) transport(segmnetation,flow control error control,conn oriented(tcp),conn less(udp))v)network(logical,routing,path detrmn)
+            vi) data(access media(framing),control how data placed and received from media(media access control(csma),error detn))
+            vii) physical(bits->signal)
+7.topology-bus,star,ring,mesh,hybrid
+8.TCP/IP MODEL-data transmission,5 layer,encapsulation-naming,
+            i)physical-binary,signal,media,protocol/cable, 
+            ii)data link-mac-data encapsulation|csma/cd,logical(LLC) sub layer-flow/error control,  
+            iii)network-provide most feature of llc..so llc usually bypassed,arp modul
+            iv)transport-tcp-conn est,data transfer,conn termn/udp
+            v)Application
+
+mkdir->system call->storage mng->file mng->make new dir
+//https://www.online-tech-tips.com/computer-tips/what-are-pc-drivers-and-why-do-you-need-them/
+
+// 55
+    public int canJump_helper(int si, int ei, int[] nums, int[] dp) {
+        if (si == ei)
+            return dp[si] = 1;
+
+        if (dp[si] != -1)
+            return dp[si];
+
+        int ans = 0;
+        for (int i = 1; i <= nums[si]; i++) {
+            ans = canJump_helper(si + i, ei, nums, dp);
+            if (ans == 1)
+                return ans;
+        }
+
+        return dp[si] = ans;
+    }
+
+    public boolean canJump(int[] nums) {
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, -1);
+        return canJump_helper(0, nums.length - 1, nums, dp) == 1 ? true : false;
+    }
+
+    bool canJump(vector<int>& nums) {
+
+        int reachablesoFar=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(reachablesoFar<i)return false;
+            reachablesoFar=max(reachablesoFar,i+nums[i]);
+            if(reachablesoFar>=nums.size()-1)return true;
+        }
+
+        return false;
+    }
+
+	// 45
+    public int jump_helper(int si, int ei, int[] nums, int[] dp) {
+        if (si == ei)
+            return dp[si] = 0;
+
+        if (dp[si] != (int) 1e8)
+            return dp[si];
+
+        int min = (int) 1e8;
+        for (int i = 1; i <= nums[si]; i++)
+            if (si + i <= ei) // [2,1]
+                min = Math.min(min, jump_helper(si + i, ei, nums, dp) + 1);
+
+        return dp[si] = min;
+    }
+
+    public int jump(int[] nums) {
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, (int) 1e8);
+        return jump_helper(0, nums.length - 1, nums, dp);
+    }
+
+    int jump(vector<int>& nums) {
+        int currentReach=0,jump=0,maxReach=0;
+        for(int i=0;i<nums.size()-1;i++)
+        {
+            maxReach=max(maxReach,i+nums[i]);
+            if(i==currentReach)
+            {
+                jump++;
+                currentReach=maxReach;
+            }
+        }
+        
+        return jump;
+    }
+	
+    //973
+	public static class mypair{
+        double val;
+        int a[][]=new int[1][2];;
+        
+        mypair(double val,int u,int v)
+        {
+            this.val=val;
+            a[0][0]=u;
+            a[0][1]=v;
+        }
+    }
+    
+    public int[][] kClosest(int[][] points, int k) {
+        PriorityQueue<mypair>pq=new PriorityQueue<mypair>((a,b)->Double.compare(b.val,a.val));
+        
+        for(int i=0;i<points.length;i++)
+        {
+            double val=Math.pow(points[i][0],2)+Math.pow(points[i][1],2);
+            pq.add(new mypair(val,points[i][0],points[i][1]));
+            if(pq.size()>k)
+                pq.poll();
+        }
+        
+        int ans[][]=new int[k][2];
+        int i=0;
+        while(pq.size()>0)
+        {
+            int [][]subans=pq.peek().a;
+            ans[i][0]=subans[0][0];
+            ans[i][1]=subans[0][1];
+            pq.poll();
+            i++;
+        }
+        
+        return ans;
+    }
+
+    //our loop  breaks after first division so no farak even after inner loop j<=i/2
+bool isPrime(int n)
+{
+    if (n <= 1)
+        return false;
+    int flag = 0;
+    for (int j = 2; j * j <= n; j++)
+    {
+        if (n % j == 0)
+        {
+            flag = 1;
+            break;
+        }
+    }
+    if (flag == 0)
+    {
+        // cout << "prime" << endl;
+        return true;
+    }
+    // cout << "not prime" << endl;
+    return false;
+}
+
+// yahan range given hogi ki low se lekr high tak prime count kro tou pehla loop i=low se i<=high tak then call isPrime.dont write logic again..is tarikke se
+// This fails on leetcode 204
+int countPrimes(int low, int high)
+{
+    int count = 0;
+    for (int i = low; i <= high; i++)
+    {
+        if (isPrime(i))
+            count++;
+    }
+    return count;
+}
+// leetcode 204
+public int countPrimes(int n) {
+    boolean arr[] = new boolean[n + 1];
+
+    Arrays.fill(arr, true);
+
+    for (int i = 2; i * i <= n; i++) {
+        if (arr[i] == true) {
+            for (int j = i + i; j <= n; j += i) {
+                if (arr[j] == true)
+                    arr[j] = false;
+            }
+        }
+    }
+
+    int count = 0;
+    for (int i = 2; i < n; i++)
+        if (arr[i] == true) // on leetcode count all prime before n
+            count++;
+    // System.out.print(i + " "); //on pep print all prime till n(inclusive)
+
+    return count;
+}
+
+//451
+ public class pair{
+        char ch;
+        int freq;
+        
+        pair(char ch,int freq)
+        {
+            this.ch=ch;
+            this.freq=freq;
+        }
+    }
+    
+    public String frequencySort(String s) {
+        HashMap<Character,Integer>map=new HashMap<>();
+        for(int i=0;i<s.length();i++)
+        {
+            char ch=s.charAt(i);
+            map.put(ch,map.getOrDefault(ch,0)+1);
+        }
+        
+        ArrayList<pair>arr=new ArrayList<>();
+        for(char ch:map.keySet())
+            arr.add(new pair(ch,map.get(ch)));
+        
+        Collections.sort(arr,(a,b)->{
+            if(b.freq>a.freq)return 1;
+            return -1;
+        });
+        
+        String ans="";
+        for(int i=0;i<arr.size();i++)
+        {
+            int freq=arr.get(i).freq;
+            char ch=arr.get(i).ch;
+            while(freq-->0)
+                ans=ans+ch;
+        }
+        
+        return ans;
+    }
+
+

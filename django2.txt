@@ -1,0 +1,103 @@
+************E-commerce project*************
+
+A project refers to the entire application and all its parts.An app refers to a submodule of the project.
+in a project there can be multiple apps and a app can be in multiple project.For your example, the project is the whole website. You might structure it so there is an app for articles,an app for ranking tables, and an app for fixtures and results.
+
+
+python manage.py startapp blog ....#ya shop
+make a file in shop urls.py
+Django requires us to include the installed apps in the settings of the main project. So, open the settings.py file of the mac and write the names of the apps under the INSTALLED_APPS section: 
+
+Static files:Our E-commerce website will not only contain simple or plain text; it will also contain additional images, CSS, or javascript. These additional files are known as static files in Django.
+
+to access static file- {% load static %}
+<a href="{%static 'blog/mystatic.txt' %}" >Click me </a>
+
+include keyword kehta h ecw project ko ki file include krdo is project mei aur vahan jaake content uthao
+setting.py of ecw installed_App ke andar blog aur shop add krlo
+make a template folder in both shop and blog and again make a folder of shop inside template,also for blog..same for static folder(not for project)
+
+bootstrap--cdn(content delievering network)--isse fayda ye hota h hume static mein css file ni daalni pdi...aur ye file hume ab baar baar download ni krni pdegi kyunki phli baari mein ye cached hojaygi aur iske baad jb bhi reload krenge tou baar baar hmari website ko uthani ni pdegi ye file.Same for scripts also.
+
+database vgra ka schema model ke roop mein aata h django mein.
+Each model maps to a single database table..
+With the help of Django models, we can manipulate and retrieve the data instead of writing complex SQL to perform the same task.
+Whenever we create a model, Django automatically executes SQL and creates a corresponding table in the database.
+sqlite is used by default in django to store data.sqlite is rdbms and store data in form of file.
+In Django, you can use the models to access the database instead of  interacting with messy SQL.
+
+You have 17 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+(this show when we run server..iska mtlb aesi kuch cheezein hai jo aapne nhi daali h jiski wjh se aapki website shi se na chale...then use
+python manage.py migrate(to apply migration))migration ka mtlb jo change model mein kiya wo store krna..migration ko apply krne se change hoga 
+python manage.py makemigrations(to store)
+Make model in model.py
+Apps.py mein apne aap ek class bnjaygi ab setting.py mein shop ki jgh  'shop.apps.ShopConfig ye kro and store changes.
+
+
+to view model make superUser(python manage.py createsuperuser)
+register your product Class in admin.py.Django add s to the classname.Django admin or superuser is like the root user of Linux OS.
+Django admin is the most dominant user which means it has all powers to read, view, update, create and delete the data.
+
+when we add a method and dont change the model then  no need to run python manage.py makemigrations.to upload a image we can easily do by adding a product(shows in images folder).But this is not recommended tarikka of adding image.
+include images with the help of media directories.in 2nd method fayda ye ki ek tou media folder alg bngya bilkul
+Updat setting.py
+STATIC_URL= "/static/"
+MEDIA_ROOT= os.path.join(BASE_DIR, "media")
+MEDIA_URL="/media/"
+1. STATIC_URL: It is simply the prefix of the URL that will be visible to the user while accessing the static files.
+
+Example: Suppose a user tries to access a static file named "mystatic.txt" of the shop app. Then, he or she will access the file at http://127.0.0.1:8000/static/shop/mystatic.txt. 
+
+2. MEDIA_ROOT: It is the path to the directory in which all the media files will be saved. Here, we have written(BASE_DIR, "media") which means that Django will create a folder named "media" under the base directory and all the media files will be saved in the "media" folder.
+
+3.MEDIA_URL: Similar to the STATIC_URL, it is also the prefix of the URL that will be visible to the user while accessing the media files.
+
+make changes in url.py []+.....
+
+
+
+
+#Fetching product using python manage.py shell(w/o using admin)
+C:\Users\Tushar\PycharmProjects\E-commerce website\ecw>python manage.py shell
+>>> from shop.models import Product
+>>> myprod=Product.objects.all()
+>>> myprod
+>>> from django.utils import timezone
+>>> myprod1=Product(product_name="mouse",category="computer",subcategory="input Device",price="100",desc="mouse lg",published_date=timezone.now())
+>>> myprod1.save()
+>>> myprod1
+Product.objects.get(product_name="mouse")
+myprod1.category
+
+Django template inheritance-Uses the cocnept of dry.
+
+#logic for showing homepage 
+=>in views.py from . models import Product  to use all product in products database
+
+=>after creating contact model register it in admin.py
+
+
+<!-- forloop.counter={{forloop.counter}}<br>    //start from 1
+            forloop.last={{forloop.last}}<br>-->
+<!-- i am here<br> ....check image attribute in shell it will give path shop/image/img1.jg-->
+
+{% for i in product|slice:"::-1" %} for latest product
+
+//session vs local storage
+geeksforgeeks.org/localstorage-and-sessionstorage-web-storage-apis/#:~:text=Maximum%20limit%20of%20data%20saving%20is%20about%205%20MB%20in,difference%20between%20LocalStorage%20and%20SessionStorage
+
+//Change password and creating superuser
+python manage.py changepassword username
+python manage.py createsuperuser(pragati-atyachaar)
+
+//authentication and authorization
+authentication-matlab kya hum whi bnde h jo hum btarhe hai..checked by username password
+authorization-matlab permission.I cannot upload video in somebody else channel.
+In django authentication builtin system it does not support-password strength checking,repeating login attempt,authentication by third party.
+
+paytm integration-as in checkout we have to place the order and make payment through paytm but when we make a post 
+request we use to give csrf token which means no other origin can make a 
+post rquest then how will paytm confirm us that order payment is done?
+In this case we have to exempt csrf token.
+
+pip install pycryptodome(copy checksum.py)

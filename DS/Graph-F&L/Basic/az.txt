@@ -1,0 +1,114 @@
+Construct Graph-addEdge/findEdge/removeEdge/removeVertex/display
+center of graph
+dfs/print all path dfs
+smallest,largest,ceil,floor,kth largest
+Get connected component/is graph connected
+heavy path *
+Hamiltonian path cycle *
+numIsland(LC)/Max area of island/Perfect Friend
+Permiter/More than 1 island
+surrounded region
+
+bfs-cycle+level printing/printing/path printing/gcc
+spread of infn
+oranges rottning/wall and gates *
+shortest path binary matrix
+isbipartite
+bus route *
+
+Topological sort
+kahn algo
+course schedule/2
+Longest increasing path
+cycle present using dfs in directional--207/210
+Kosa Raju
+Iterative dfs
+
+Prims algo(2) 2 case(connected disconnected)
+djikstra(2)
+Network delay time 
+swim in water
+cheapest flight within k stop(2) *
+bellman ford
+    //Shortest Path Visiting All Nodes
+
+Union find
+Count component
+Redundant Connection
+num of province
+num of oprn to make comp connected
+Satisfiability of Equality Equations
+Number of similar groups-2
+lexographically smallest eqv string
+Max island,area of island
+num of island 2 *  (repeating edge/visited+parent/only parent)
+Malware Spread
+Region cut by slashes 
+Redundant connection 2  
+journey to moon
+
+kruskal
+min cost to supply water
+mr president 
+
+Articulation pt
+Critical Conn
+
+int shortestPath_helper(vector<vector<int>>& graph)
+    {
+        int n=graph.size();
+        int all=(1<<n)-1;
+        queue<pair<int,pair<int,int>>>que; //{node,bitmask,dist}
+        set<pair<int,int>>s;
+        for(int i=0;i<n;i++)
+        {
+            int bit=(1<<i);
+            que.push({i,{bit,0}});
+            s.insert({i,bit});
+        }
+        
+        while(que.size()!=0)
+        {
+            auto mp=que.front();
+            que.pop();
+            int node=mp.first,nodebitmask=mp.second.first,d=mp.second.second;
+            for(int i=0;i<graph[node].size();i++)
+            {
+                int temp=(nodebitmask|(1<<graph[node][i]));
+                if(temp==all)return d+1;
+                else if(s.find({graph[node][i],temp})!=s.end())
+                    continue;
+                s.insert({graph[node][i],temp});
+                que.push({graph[node][i],{temp,d+1}});
+            }
+        }
+        
+        return 0;
+    }
+    
+    int shortestPathLength(vector<vector<int>>& graph) {
+        if(graph.size()==0)return 0;
+        return shortestPath_helper(graph);
+    }
+
+//120
+public int minimumTotal_helper(List<List<Integer>> triangle,int [][]dp,int idx,int r,int n)
+    {
+        if(r==n-1)
+            return triangle.get(r).get(idx);
+        
+        if(dp[r][idx]!=(int)-1e5)
+            return dp[r][idx];
+        
+        dp[r][idx]=Math.min(minimumTotal_helper(triangle,dp,idx,r+1,n),minimumTotal_helper(triangle,dp,idx+1,r+1,n))+triangle.get(r).get(idx);
+        
+        return dp[r][idx];
+    }
+    
+    public int minimumTotal(List<List<Integer>> triangle) {
+         int n=triangle.size();
+         int [][]dp=new int[n][n];
+         for(int []a:dp)
+             Arrays.fill(a,(int)-1e5);
+         return minimumTotal_helper(triangle,dp,0,0,n);
+    }

@@ -1,0 +1,202 @@
+/**
+ * Find Anagram(2-hmap,array)
+ * K anagram
+ * Anagram mapping
+ * Valid anagram(2)
+ * Group Anagram(2)
+ * Group shifted string
+ * Word Pattern
+ * Isomorphic String
+
+* Pair with equal sum
+* Length of longest substring with exactly k distinct
+* Count distinct in k len(2)
+* Longest/Count sub non rep char (2 tarikke likhne ke)
+* Count/Longest substring atmost k unique
+* Min window in s for all unique char in string t/smallest window for all unique char of s
+* .Count of eq subarray
+* Count/length subarray equal 012
+* largest/count subarray sum 0
+* .Largest subarray contiguous element
+* .Smallest subarray with most freq ele 
+
+* Randomized set(2)
+* copy list
+
+* Last stone wgt
+* Find kth largest
+* Kth largest stream
+* Kth smallest in sorted matrix
+* Top k frequent
+* Sort k sorted array
+* .Merge k sorted list(2 qs)  //empty list
+ 
+* max freq stack
+* # of employee under every manager
+* Maximum freq char
+* Intersection of array 1/2
+* Longest cons seq(2)
+* Pair with sum in 2 sorted matrix(2)
+* Arithmetic seq
+* Contain duplicate(2)
+* Contain duplicate:2 (2)
+* Finding user active min
+* Complete Task
+* .Find path from ticket    
+* .Array divide in pair
+* .Median PQ
+* .Trap rain water 2
+* .Fraction to decimal
+* First uniq char
+* Sum of unique char
+* Top k freq words *(2)
+* HashMap
+* HashSet
+* Construct heap.
+*/
+
+
+
+2.Count substring exactly k distinct
+3.Powerful Integer
+4.Binary String Repres 1toN
+
+public static void removeCharacterFromMap(HashMap<Character, Integer> map, char ch) {
+    if (map.get(ch) == 1)
+        map.remove(ch);
+    else
+        map.put(ch, map.get(ch) - 1);
+}
+
+public static int CountSubstring1Character(String str){
+        int si=0,ei=0,n=str.length(),dc=0,ans=0;
+        HashMap<Character,Integer>map=new HashMap<>();
+        while(ei<n)
+        {
+            char ch=str.charAt(ei);
+            ei++;
+            if(map.containsKey(ch))
+            map.put(ch,map.get(ch)+1);
+            else{
+                dc++;
+                map.put(ch,1);
+            }
+            
+            while(dc>1)
+            {
+                ch=str.charAt(si);
+                si++;
+                if(map.get(ch)>1)
+                map.put(ch,map.get(ch)-1);
+                else{
+                    map.remove(ch);
+                    dc--;
+                }
+            }
+            
+            ans+=ei-si;
+        }
+        return ans;
+    }
+
+public static int Count_Substrings_KCharacters(String str, int k) {
+
+    if (k == 1)
+        return CountSubstring1Character(str);
+    else {
+
+        int j = -1, ib = -1, is = -1, ans = 0;
+        HashMap<Character, Integer> bmap = new HashMap<>();
+        HashMap<Character, Integer> smap = new HashMap<>();
+        while (true) {
+            boolean l1 = false, l2 = false, l3 = false;
+            while (ib < str.length() - 1) {
+                l1 = true;
+                ib++;
+                char ch = str.charAt(ib);
+                bmap.put(ch, bmap.getOrDefault(ch, 0) + 1);
+
+                if (bmap.size() == k + 1) {
+                    removeCharacterFromMap(bmap, ch);
+                    ib--;
+                    break;
+                }
+            }
+
+            while (is < ib) {
+                l2 = true;
+                is++;
+                char ch = str.charAt(is);
+                smap.put(ch, smap.getOrDefault(ch, 0) + 1);
+
+                if (smap.size() == k) {
+                    removeCharacterFromMap(smap, ch);
+                    is--;
+                    break;
+                }
+            }
+
+            while (j < is) {
+                l3 = true;
+                if (bmap.size() == k && smap.size() == k - 1)
+                    ans += ib - is;
+
+                j++;
+                char ch = str.charAt(j);
+
+                removeCharacterFromMap(bmap, ch);
+                removeCharacterFromMap(smap, ch);
+
+                if (bmap.size() < k || smap.size() < k - 1)
+                    break;
+            }
+
+            if (l1 == false && l2 == false && l3 == false)
+                break;
+        }
+
+        return ans;
+    }
+}
+
+public List<Integer> powerfulIntegers(int x, int y, int bound) {
+    HashSet<Integer>hs=new HashSet<>();
+    for(int i=1;i<bound;i*=x)  //x^0 x^1 x^2
+    {
+        for(int j=1;i+j<=bound;j*=y)
+        {
+            hs.add(i+j);
+            if(y==1)break;
+        }
+        if(x==1)break;
+    }
+
+    return new ArrayList<>(hs);
+}
+
+//=============
+public static boolean BinaryStringRepresentin1toN(String s, int n) {
+    
+    HashMap<Integer,Boolean>map=new HashMap<>();
+    int count=0;
+    for(int i=0;i<s.length();i++)
+    {
+        if(s.charAt(i)==0)
+            continue;
+        
+        for(int j=i,num=0;num<=n && j<s.length();j++)
+        {
+            num =(num<<1)+s.charAt(j)-'0';
+            if(num>=1 && num<=n && map.getOrDefault(num,false)==false)
+            {
+                map.put(num,true);
+                count++;
+            }
+            
+            if(count==n)
+                return true;
+        }
+    }
+    
+    return false;
+}
